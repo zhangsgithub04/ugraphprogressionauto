@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unlabeled Graph Dynamics Lab</title>
+<style>
+:root{--bg:#0b1020;--panel:#141d31;--panel2:#1b2942;--line:#2b3a56;--fg:#edf3ff;--muted:#9caec9;--accent:#75bcff;--green:#64dfbd;--orange:#ffbf76;--red:#ff8f98}*{box-sizing:border-box}body{margin:0;font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(ellipse at 14% 0%,#182a4a 0%,var(--bg) 56%);color:var(--fg)}button,input,select{font:inherit}button{background:#273957;border:1px solid #395477;color:#eff7ff;padding:9px 13px;border-radius:9px;cursor:pointer;font-weight:600}button:hover{background:#315077}button:disabled{opacity:.42;cursor:not-allowed}button.primary{background:#257ed0;border-color:#3396ed}button.primary:hover{background:#3291e2}button.ghost{background:transparent}.shell{max-width:1520px;margin:auto;padding:26px 22px 38px}.header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px}.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:2px;font-weight:700;color:var(--green)}h1{font-size:clamp(25px,3vw,36px);margin:5px 0 4px;letter-spacing:-1.1px}p{margin:4px 0;color:var(--muted)}.pill{font-size:12px;color:var(--green);border:1px solid #2c665f;background:#123a3a;padding:7px 11px;border-radius:99px;white-space:nowrap}.layout{display:grid;grid-template-columns:minmax(350px,1.18fr) minmax(350px,1fr);gap:16px}.panel{background:rgba(19,28,47,.96);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0;box-shadow:0 8px 24px #0001}.span2{grid-column:1/-1}.panelhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.panel h2{font-size:16px;margin:0}.subtle{color:var(--muted);font-size:12px}.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.row.between{justify-content:space-between}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:11px;font-weight:750;letter-spacing:.05em;color:#b1bfda;text-transform:uppercase}input[type=number],select,input[type=text]{background:#101a2d;border:1px solid #3b4b68;color:var(--fg);border-radius:9px;padding:8px 10px;min-height:37px}input[type=number]{width:82px}select{min-width:130px}.controls{display:flex;flex-wrap:wrap;gap:9px;align-items:end}.divider{border-top:1px solid var(--line);margin:15px 0}.canvas-wrap{border-radius:12px;border:1px solid #2d3f60;background:radial-gradient(circle at center,#213454 0%,#101a2b 75%);position:relative;overflow:hidden}.canvas-wrap svg{display:block;width:100%;height:395px;touch-action:none}.helper{color:var(--muted);font-size:12px;margin-top:9px}.node{fill:#91cfff;stroke:#11243e;stroke-width:2.5;cursor:pointer}.node.selected{fill:#ffcf77;stroke:#ff9b54}.node:hover{fill:white}.edge{stroke:#76a5d4;stroke-width:2.0;stroke-opacity:.76;pointer-events:none}.node-text{pointer-events:none;fill:#102237;font-weight:800;text-anchor:middle;dominant-baseline:central;font-size:12px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.stat{background:#1b2940;border:1px solid #2e415e;border-radius:11px;padding:12px 11px;min-height:78px}.stat .label{font-size:11px;color:#aabbd5}.stat strong{font-size:23px;display:block;letter-spacing:-.5px;margin:2px 0}.stat small{color:#98acc6}.switchbar{display:flex;gap:5px;background:#0f192b;padding:4px;border-radius:11px;border:1px solid #304461}.switchbar button{flex:1;border:0;background:none;padding:9px 7px}.switchbar button.active{background:#236ba7}.hint{border-left:3px solid var(--accent);background:#18304a;padding:10px 12px;border-radius:0 8px 8px 0;font-size:12px;color:#d0dfef;margin:11px 0}.progress{height:7px;border-radius:12px;background:#26334c;overflow:hidden;margin-top:9px}.progress>span{height:100%;display:block;background:linear-gradient(90deg,#4e8fef,#6ee2c1);width:0;transition:width .2s}.tags{display:flex;gap:7px;flex-wrap:wrap}.tag{font-size:11px;color:#bfd1eb;border:1px solid #405476;border-radius:20px;padding:4px 8px}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.timeline{display:flex;gap:8px;overflow-x:auto;padding:10px 0 16px;min-height:92px}.stepcard{min-width:112px;background:#1b2a44;border:1px solid #374c6a;border-radius:11px;padding:10px;cursor:pointer;text-align:left}.stepcard:hover,.stepcard.active{border-color:#72bbff;background:#263d60}.stepcard .stepno{font-size:11px;color:#8caed2}.stepcard .nm{font-weight:750;font-size:14px;margin:4px 0}.stepcard .edges{font-size:11px;color:#9cadc4}.stepcard.repeated{border-color:#d7ad67}.details{display:grid;grid-template-columns:1fr 1fr;gap:13px}.detailbox{background:#111d31;border:1px solid #293d5a;border-radius:12px;padding:12px;min-width:0}.detailbox h3{font-size:13px;margin:0 0 7px}.detailbox p{font-size:12px;line-height:1.55}.line{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #253751;padding:7px 0;color:#b5c6df}.line strong{color:#edf3ff;text-align:right}.foot{font-size:11px;color:#829ab9;margin-top:14px;line-height:1.7}.warn{color:var(--orange)}.good{color:var(--green)}.graphcode{overflow-wrap:anywhere;max-height:76px;overflow:auto;background:#0d182a;border-radius:8px;padding:8px;color:#9ec9f5;font-size:11px}.busy{color:var(--orange)}.visual-pair{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px}.preview{display:block;width:100%;height:300px;background:radial-gradient(circle,#1b304b,#0d1829);border:1px solid #293d5a;border-radius:10px}.preview .edge{stroke-width:1.4}.visual-pair h3{margin:0}.visual-pair .graphcode{margin-top:8px}@media(max-width:700px){.visual-pair{grid-template-columns:1fr}}@media(max-width:900px){.layout{grid-template-columns:1fr}.span2{grid-column:auto}.stats{grid-template-columns:repeat(3,1fr)}.canvas-wrap svg{height:340px}}@media(max-width:500px){.shell{padding:14px 10px}.panel{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}.details{grid-template-columns:1fr}.header{display:block}.pill{display:inline-block;margin-top:10px}}
+</style></head><body>
+<div class="shell"><div class="header"><div><div class="eyebrow">Research workbench · deterministic graph dynamics</div><h1>Unlabeled Graph Dynamics Lab</h1><p>Build an undirected graph, apply <b>u</b>, <b>u+</b>, or <b>u−</b>, and inspect every derived graph alongside its canonical relabeling.</p></div><div class="pill">◌ Client-side only · nothing uploaded</div></div>
+<div class="layout">
+<section class="panel"><div class="panelhead"><h2>01 · Initial graph editor</h2><span class="subtle" id="graphInfo">6 vertices · 0 edges</span></div><div class="controls"><div class="field"><label for="count">Vertices</label><input type="number" min="1" max="80" value="6" id="count"></div><div class="field"><label for="preset">Preset</label><select id="preset"><option value="cycle">Cycle Cₙ</option><option value="path">Path Pₙ</option><option value="empty">Empty</option><option value="complete">Complete Kₙ</option><option value="star">Star K₁,ₙ₋₁</option><option value="random">Random G(n,p)</option></select></div><button id="applyPreset">Apply preset</button><button class="ghost" id="clear">Clear edges</button><button class="ghost" id="undo">Undo edit</button></div>
+<div class="divider"></div><div class="canvas-wrap"><svg id="editor" viewBox="0 0 600 395" aria-label="Interactive graph editor"></svg></div><div class="helper">Click two vertices to toggle an edge. Drag vertices to rearrange the drawing. Vertex numbers are temporary editing labels, not graph identities.</div><div class="row between" style="margin-top:12px"><div class="tags"><span class="tag" id="degreeHint">Degree sequence: —</span><span class="tag" id="editStatus">Ready</span></div><button class="ghost" id="resetView">Reset layout</button></div></section>
+<section class="panel"><div class="panelhead"><h2>02 · Progression controls</h2><span class="subtle">Simultaneous updates</span></div><div class="field"><label>Choose transformation rule</label><div class="switchbar" id="modebar"><button data-rule="u" class="active">u</button><button data-rule="plus">u+</button><button data-rule="minus">u−</button></div></div><div class="hint" id="ruleDescription">u toggles every edge/nonedge whose endpoints have equal degrees in the current graph.</div>
+<div class="controls"><div class="field"><label for="maxSteps">Safety step limit</label><input type="number" id="maxSteps" value="100000" min="1" max="1000000"></div><button class="primary" id="run">▶ Run to terminal state</button><button id="oneStep">One step</button><button id="stop" disabled>Stop</button></div>
+<div class="helper">Stopping depends on the selected rule: u runs until an isomorphic cycle (including a fixed point); u+ stops on completion or a fixed point; u− stops on collapse or a fixed point. A safety limit pauses long runs; increase it and press Run to resume.</div><div class="divider"></div><div class="stats"><div class="stat"><div class="label">Path / transient length</div><strong id="pathStat">—</strong><small id="pathSub">Steps to cycle / terminal</small></div><div class="stat"><div class="label">Attractor period</div><strong id="cycleStat">—</strong><small id="cycleSub">Cycle or terminal outcome</small></div><div class="stat"><div class="label">Visited states</div><strong id="visitedStat">0</strong><small>Unique up to isomorphism</small></div></div>
+<div class="divider"></div><div class="panelhead"><h2>03 · Canonicalization strategy</h2><span class="subtle">Client-side · exact or bounded</span></div>
+<p>Explore the full trajectory first. Select any step to compare its derived adjacency with a canonical relabeling. Canonicalization runs in a separate worker so the page stays responsive.</p>
+<div class="controls" style="margin-top:12px"><div class="field"><label for="canonBudget">IR search nodes</label><input id="canonBudget" type="number" value="20000" min="100" max="1000000" style="width:120px"></div><button id="canonRun">Canonicalize selected</button><button id="canonCancel" disabled>Cancel IR</button></div>
+<label class="helper" style="display:block;margin:8px 0"><input type="checkbox" id="autoCanon" checked> Automatically canonicalize when a progression step is selected</label><div class="hint">Exact canonical form is reported only if individualization–refinement search finishes. If the budget is exceeded, the displayed candidate is labeled <b>unverified</b>; it is not used for cycle detection. No exhaustive basin enumeration.</div>
+<div class="subtle" id="canonStatus">Choose a progression step to begin.</div></section>
+<section class="panel span2"><div class="panelhead"><h2>04 · Progression history</h2><div class="row"><button id="exportJson">↓ JSON</button><button id="exportCsv">↓ CSV</button><button id="exportG6">↓ graph6</button><button id="exportCompact">↓ Compact result</button></div></div><div class="row between"><span class="subtle" id="status">Edit a graph, then run progression.</span><span class="subtle" id="runtime"></span></div><div class="row between" style="margin:8px 0"><div class="row"><button id="stepPrev">← Previous</button><button id="stepNext">Next →</button><label class="subtle" for="stepJump">Jump to step</label><input id="stepJump" type="number" min="0" value="0" style="width:105px"><button id="stepGo">Go</button></div><span class="subtle" id="rangeHint">All states remain in memory until page close.</span></div><div class="timeline" id="timeline"></div>
+<div class="visual-pair"><div class="detailbox"><div class="panelhead"><h3>Derived state Gᵢ</h3><span class="subtle" id="derivedLabel">Original labels</span></div><svg id="derivedView" class="preview" viewBox="0 0 460 320" role="img" aria-label="Derived graph"></svg><div class="graphcode mono" id="derivedCode">—</div></div><div class="detailbox"><div class="panelhead"><h3>Canonicalized C(Gᵢ)</h3><span class="subtle" id="canonicalBadge">Not computed</span></div><svg id="canonicalView" class="preview" viewBox="0 0 460 320" role="img" aria-label="Canonical relabeling"></svg><div class="graphcode mono" id="canonicalCode">—</div></div></div>
+<div class="detailbox" style="margin:13px 0"><div class="panelhead"><h3>Compact result · selected canonical graph + whole trajectory</h3><button id="copyCompact">Copy result</button></div><div class="helper">Format: { canonicalEdges: [[u,v], ...], pathSize, cycleSize }. Canonical edges use zero-based canonical labels. Path and cycle lengths describe the entire progression from G₀, not the selected step. A null value means not yet determined (or no cycle for terminal complete/collapse).</div><pre class="graphcode mono" id="compactResult" style="max-height:190px;white-space:pre-wrap">Run progression and canonicalize a selected state to see its edge list.</pre><div class="subtle" id="compactStatus">An exact canonical edge list is shown only after a completed canonicalization.</div></div>
+<div class="detailbox" style="margin:13px 0"><h3>Individualization–refinement trace for selected state</h3><p id="canonTrace">Run canonicalization to view degree partition, refinements, branch exploration, and relabeling.</p><div class="graphcode mono" id="canonOrder">—</div></div><div class="details"><div class="detailbox"><h3>Selected state</h3><div class="line"><span>Step</span><strong id="selStep">—</strong></div><div class="line"><span>Edges</span><strong id="selEdges">—</strong></div><div class="line"><span>Degree sequence</span><strong id="selDegrees">—</strong></div><div class="line"><span>Graph6 (current labeling)</span></div><div class="graphcode mono" id="selG6">—</div><p>Export includes edge lists, graph6 encodings, degrees, and results. No browser storage, server, or account is used. Canonical relabeling is optional and calculated on demand.</p></div><div class="detailbox"><h3>Interpretation</h3><p id="interpretation">The path length is the number of transitions before the first state in the eventual cycle. A period-1 cycle is a fixed point up to isomorphism. Graphs are compared by exact isomorphism, not only by degree sequence or a probabilistic hash.</p><div class="tags" id="resultTags"><span class="tag">Deterministic rule</span><span class="tag">Isomorphism-aware</span><span class="tag">Memory-only</span></div></div></div></section>
+</div><div class="foot">Rule convention: all vertex degrees are computed on Gᵢ and all eligible pairs are updated simultaneously. u: toggle adjacency of equal-degree pairs; u+: add missing edges of equal-degree pairs; u−: remove existing edges of equal-degree pairs. Cycle detection uses exact graph-isomorphism checks. Canonicalization selects the lexicographically smallest upper-triangle adjacency code among a deterministic invariant-refined family of vertex orderings, with a configurable search budget; unfinished searches are explicitly marked unverified.</div></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id), E={}; let n=6, graph, positions=[],selected=null,historyUndo=[],rule='u',states=[],comparison=new Map(),outcome=null,busy=false,abort=false,uiStep=0,canonWorker=null,canonCache=new Map();
+const key=(a,b)=>a<b?`${a},${b}`:`${b},${a}`;
+function newGraph(size){return {n:size,edges:new Set()}}
+function clone(g){return {n:g.n,edges:new Set(g.edges)}}
+function withEdge(g,a,b){if(a===b)return;const k=key(a,b);if(g.edges.has(k))g.edges.delete(k);else g.edges.add(k)}
+function degrees(g){const d=new Int32Array(g.n);for(const s of g.edges){const [a,b]=s.split(',').map(Number);d[a]++;d[b]++}return Array.from(d)}
+function matrix(g){const A=Array.from({length:g.n},()=>new Uint8Array(g.n));for(const s of g.edges){const [a,b]=s.split(',').map(Number);A[a][b]=A[b][a]=1}return A}
+function transform(g,mode){const d=degrees(g),h=newGraph(g.n);for(let a=0;a<g.n;a++)for(let b=a+1;b<g.n;b++){const has=g.edges.has(key(a,b)),same=d[a]===d[b];const next=mode==='plus'?(has||same):mode==='minus'?(has&&!same):(has!==same);if(next)h.edges.add(key(a,b))}return h}
+function isExact(a,b){if(a.edges.size!==b.edges.size || a.n!==b.n)return false;for(const x of a.edges)if(!b.edges.has(x))return false;return true}
+function invariant(g){const d=degrees(g).sort((a,b)=>a-b),sum=d.reduce((a,b)=>a+b,0);return `${g.n}|${sum}|${d.join('.')}`}
+// Exact undirected graph isomorphism: joint 1-WL refinement + backtracking on compatible color classes.
+function isomorphic(g,h){if(g.n!==h.n||g.edges.size!==h.edges.size)return false;if(isExact(g,h))return true;const size=g.n;if(invariant(g)!==invariant(h))return false;const A=matrix(g),B=matrix(h);let cA=degrees(g),cB=degrees(h);
+ for(let round=0;round<size;round++){const sig=(M,c,v)=>{const counts=new Map();for(let k=0;k<size;k++)if(M[v][k])counts.set(c[k],(counts.get(c[k])||0)+1);return `${c[v]}|${Array.from(counts).sort((x,y)=>x[0]-y[0]).map(([x,y])=>x+':'+y).join(',')}`};const sA=cA.map((_,i)=>sig(A,cA,i)),sB=cB.map((_,i)=>sig(B,cB,i));const labels=Array.from(new Set([...sA,...sB])).sort(),dict=new Map(labels.map((s,i)=>[s,i]));const nA=sA.map(s=>dict.get(s)),nB=sB.map(s=>dict.get(s));const hist=xs=>{let z=new Map();for(const x of xs)z.set(x,(z.get(x)||0)+1);return Array.from(z).sort((x,y)=>x[0]-y[0]).map(x=>x.join(':')).join('|')};if(hist(nA)!==hist(nB))return false;const stable=nA.every((c,i)=>c===cA[i])&&nB.every((c,i)=>c===cB[i]);cA=nA;cB=nB;if(stable)break}
+ const buckets=new Map();for(let v=0;v<size;v++){const c=cB[v];if(!buckets.has(c))buckets.set(c,[]);buckets.get(c).push(v)}const order=Array.from({length:size},(_,i)=>i).sort((a,b)=>buckets.get(cA[a]).length-buckets.get(cA[b]).length || degrees(g)[b]-degrees(g)[a]);const mapping=new Int32Array(size).fill(-1),used=new Uint8Array(size);function dfs(t){if(t===size)return true;const v=order[t];for(const w of buckets.get(cA[v])){if(used[w])continue;let valid=true;for(let j=0;j<t;j++){const v2=order[j];if(A[v][v2]!==B[w][mapping[v2]]){valid=false;break}}if(!valid)continue;mapping[v]=w;used[w]=1;if(dfs(t+1))return true;used[w]=0;mapping[v]=-1}return false}return dfs(0)}
+function graph6(g){const k=g.n;let bits='';for(let j=1;j<k;j++)for(let i=0;i<j;i++)bits+=g.edges.has(key(i,j))?'1':'0';while(bits.length%6)bits+='0';let out=k<=62?String.fromCharCode(k+63):'~'+String.fromCharCode(63+((k>>12)&63),63+((k>>6)&63),63+(k&63));for(let i=0;i<bits.length;i+=6)out+=String.fromCharCode(parseInt(bits.slice(i,i+6),2)+63);return out}
+function snapshot(){historyUndo.push(clone(graph));if(historyUndo.length>30)historyUndo.shift()}
+function resetPositions(){positions=Array.from({length:n},(_,i)=>{const theta=2*Math.PI*i/n-Math.PI/2,rad=n<=3?117:n>40?163:147;return {x:300+rad*Math.cos(theta),y:197+rad*Math.sin(theta)}})}
+function setPreset(p){snapshot();graph=newGraph(n);if(p==='path'||p==='cycle')for(let i=0;i<n-1;i++)withEdge(graph,i,i+1);if(p==='cycle'&&n>2)withEdge(graph,n-1,0);if(p==='star')for(let i=1;i<n;i++)withEdge(graph,0,i);if(p==='complete')for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)withEdge(graph,i,j);if(p==='random')for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)if(Math.random()<.28)withEdge(graph,i,j);invalidate();draw()}
+function invalidate(){cancelCanonical();states=[];comparison=new Map();outcome=null;uiStep=0;canonCache.clear();renderHistory()}
+function svgEl(tag,attrs){const el=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);return el}
+let drag=null;
+function draw(){const svg=$('editor');svg.replaceChildren();const d=degrees(graph);for(const s of graph.edges){const [a,b]=s.split(',').map(Number);svg.append(svgEl('line',{x1:positions[a].x,y1:positions[a].y,x2:positions[b].x,y2:positions[b].y,class:'edge'}))}for(let i=0;i<n;i++){const p=positions[i],r=n>35?10:14;const cir=svgEl('circle',{cx:p.x,cy:p.y,r,class:`node ${selected===i?'selected':''}`,'data-i':i});svg.append(cir);if(n<=35){const text=svgEl('text',{x:p.x,y:p.y,class:'node-text'});text.textContent=i;svg.append(text)}}$('graphInfo').textContent=`${n} vertices · ${graph.edges.size} edges`;$('degreeHint').textContent='Degree sequence: '+d.slice().sort((a,b)=>b-a).join(', ')}
+function coords(evt){const rect=$('editor').getBoundingClientRect();return {x:(evt.clientX-rect.left)*600/rect.width,y:(evt.clientY-rect.top)*395/rect.height}}
+$('editor').addEventListener('pointerdown',e=>{if(busy)return;const item=e.target.closest('.node');if(!item)return;const i=+item.dataset.i;drag={i,from:coords(e),moved:false};try{$('editor').setPointerCapture(e.pointerId)}catch{}});
+$('editor').addEventListener('pointermove',e=>{if(!drag)return;const p=coords(e);if(Math.hypot(p.x-drag.from.x,p.y-drag.from.y)>6)drag.moved=true;if(drag.moved){positions[drag.i]={x:Math.max(20,Math.min(580,p.x)),y:Math.max(20,Math.min(375,p.y))};draw()}});
+$('editor').addEventListener('pointerup',e=>{if(!drag)return;const {i,moved}=drag;drag=null;if(moved)return;if(selected===null){selected=i;$('editStatus').textContent=`Selected vertex ${i}`}else if(selected===i){selected=null;$('editStatus').textContent='Selection cleared'}else{snapshot();withEdge(graph,selected,i);selected=null;invalidate();$('editStatus').textContent='Edge toggled'}draw()});
+$('count').addEventListener('change',()=>{const value=Math.max(1,Math.min(80,Math.floor(Number($('count').value)||6)));$('count').value=value;n=value;selected=null;historyUndo=[];graph=newGraph(n);resetPositions();setPreset($('preset').value)});
+$('applyPreset').onclick=()=>setPreset($('preset').value);$('clear').onclick=()=>setPreset('empty');$('undo').onclick=()=>{if(historyUndo.length){graph=historyUndo.pop();invalidate();draw()}};$('resetView').onclick=()=>{resetPositions();draw()};
+function chooseRule(v){rule=v;document.querySelectorAll('#modebar button').forEach(b=>b.classList.toggle('active',b.dataset.rule===v));$('ruleDescription').textContent=v==='u'?'u: toggle every adjacency between vertices that have equal degrees. Edges can be both added and removed.':v==='plus'?'u+: add all currently missing edges between pairs of vertices with equal degrees; never remove edges.':'u−: remove all existing edges between pairs of vertices with equal degrees; never add edges.';invalidate()}
+document.querySelectorAll('#modebar button').forEach(b=>b.onclick=()=>chooseRule(b.dataset.rule));
+function stateKey(g){return invariant(g)}
+function addState(g){const inv=stateKey(g);let bucket=comparison.get(inv);if(bucket){for(const i of bucket)if(isomorphic(states[i],g))return i;bucket.push(states.length)}else comparison.set(inv,[states.length]);states.push(g);return -1}
+function terminalType(g,selectedRule=rule){const all=g.n*(g.n-1)/2;if(selectedRule==='plus'&&g.edges.size===all)return 'complete';if(selectedRule==='minus'&&g.edges.size===0)return 'collapsed';return null}
+function terminalOutcome(g,index){const type=terminalType(g);if(!type)return null;return {type,transient:index,period:null,repeatIndex:null,atStep:index}}
+const yieldFrame=()=>new Promise(r=>setTimeout(r,0));
+function freeze(v){busy=v;$('run').disabled=v;$('oneStep').disabled=v;$('stop').disabled=!v;$('applyPreset').disabled=v;$('count').disabled=v;$('clear').disabled=v;$('undo').disabled=v;$('preset').disabled=v;document.querySelectorAll('#modebar button').forEach(b=>b.disabled=v)}
+async function runProgression(one=false){
+ if(busy)return;
+ abort=false;freeze(true);const start=performance.now();
+ if(!states.length){comparison=new Map();addState(clone(graph))}
+ if(!outcome)outcome=terminalOutcome(states[states.length-1],states.length-1);
+ const safetyLimit=Math.max(1,Math.min(1000000,Math.floor(Number($('maxSteps').value)||100000)));
+ // The safety setting controls the maximum total transitions retained; rerun after increasing it.
+ const endAt=one?Math.min(states.length,safetyLimit):safetyLimit;
+ try{
+  while(!outcome&&!abort&&states.length-1<endAt){
+   const prev=states[states.length-1],next=transform(prev,rule),newIndex=states.length;
+   // Only u+ can stop at complete, and only u- can stop at empty. u always checks for a cycle.
+   const terminal=terminalOutcome(next,newIndex);
+   if(terminal){
+    const found=addState(next);
+    if(found!==-1){ // terminal was already encountered: retain only the first occurrence
+      outcome=terminalOutcome(states[found],found);
+    }else outcome=terminal;
+    break;
+   }
+   const first=addState(next);
+   if(first!==-1){
+    outcome={type:newIndex-first===1?'fixed':'cycle',transient:first,period:newIndex-first,repeatIndex:first,atStep:newIndex};
+    break;
+   }
+   if((states.length-1)%10===0){
+    $('status').textContent=`Progressing… ${states.length-1} transitions; checking the selected rule’s stopping condition.`;
+    await yieldFrame();
+   }
+  }
+  if(outcome){
+   const t=outcome.type;
+   $('status').textContent=t==='complete'?`Complete graph K${n} reached at step ${outcome.atStep}.`:
+    t==='collapsed'?`Empty graph reached at step ${outcome.atStep} (collapsed).`:
+    t==='fixed'?`Isomorphic fixed point reached; path length ${outcome.transient}.`:
+    `Cycle detected: path length ${outcome.transient}, period ${outcome.period}.`;
+  }else if(abort){$('status').textContent=`Stopped manually at step ${states.length-1}. Press Run to resume.`}
+  else if(one){$('status').textContent=`One step completed (${states.length-1}); not yet terminal.`}
+  else{$('status').textContent=`Safety limit of ${safetyLimit.toLocaleString()} steps reached without termination. Increase limit and press Run to resume.`}
+  uiStep=states.length-1;renderHistory();$('runtime').textContent=`${(performance.now()-start).toFixed(1)} ms`;
+ }catch(err){$('status').textContent=`Error: ${err.message}`;console.error(err)}finally{freeze(false);if(states.length&&$('autoCanon').checked&&!canonCache.has(uiStep))canonicalizeSelected()}
+}
+$('run').onclick=()=>runProgression(false);
+$('oneStep').onclick=()=>runProgression(true);
+$('stop').onclick=()=>abort=true;
+function renderHistory(){refreshCompact();const t=$('timeline');t.replaceChildren();const total=states.length;$('visitedStat').textContent=total.toLocaleString();$('pathStat').textContent=outcome?outcome.transient:'—';$('cycleStat').textContent=outcome?(outcome.period??(outcome.type==='complete'?'Kₙ':'Empty')):'—';$('pathSub').textContent=outcome?(outcome.period===null?'Steps to terminal':'First cycle index'):'Not yet determined';$('cycleSub').textContent=outcome?(outcome.type==='complete'?'Complete graph':outcome.type==='collapsed'?'Empty graph':outcome.period===1?'Fixed point':'Repeating cycle'):'Not yet determined';if(!total){$('selStep').textContent='—';$('selEdges').textContent='—';$('selDegrees').textContent='—';$('selG6').textContent='—';drawPreview('derivedView',null);drawPreview('canonicalView',null);return}const indexes=total>110?[...Array.from({length:35},(_,i)=>i),...Array.from({length:75},(_,i)=>total-75+i)]:Array.from({length:total},(_,i)=>i);for(const i of indexes){const s=states[i],b=document.createElement('button');b.className='stepcard'+(i===uiStep?' active':'')+(outcome&&i>=outcome.transient?' repeated':'');b.innerHTML=`<div class="stepno">STEP ${i}</div><div class="nm">G${i}</div><div class="edges">${s.edges.size} edges</div>`;b.onclick=()=>{uiStep=i;renderHistory()};t.append(b)}$('rangeHint').textContent=total>110?'Timeline shows first 35 and last 75; jump to any step.':'Every state is shown; jump to any step.';if(total>110){const p=document.createElement('span');p.className='subtle';p.textContent='Middle states omitted from timeline, but included in export.';t.prepend(p)}$('stepJump').value=uiStep;$('stepPrev').disabled=uiStep===0;$('stepNext').disabled=uiStep>=total-1;const s=states[Math.max(0,Math.min(uiStep,total-1))];showCanonical();$('selStep').textContent=uiStep;$('selEdges').textContent=s.edges.size;$('selDegrees').textContent=degrees(s).sort((a,b)=>b-a).join(', ');$('selG6').textContent=graph6(s);$('interpretation').textContent=outcome?(outcome.period===null?`Stopped at step ${outcome.atStep}: ${outcome.type==='complete'?'complete graph under u+':'empty graph (collapse) under u−'}.`:`The trajectory has ${outcome.transient} transient transition(s) and an attractor period of ${outcome.period}. ${outcome.period===1?'The terminal graph is fixed up to isomorphism.':'After the transient, the trajectory repeats these isomorphism classes.'} Each equality is verified by exact graph isomorphism.`):'No isomorphic repeated state has been observed. Current path length is a partial bound, not a proven transient length.';}
+function compactRecord(step=uiStep){
+ const c=canonCache.get(step);
+ const exact=!!(c&&c.exact&&c.order&&c.edges);
+ const pathSize=outcome?outcome.transient:null;
+ const cycleSize=outcome?outcome.period:null;
+ return {canonicalEdges:exact?c.edges.map(e=>e.slice()).sort((a,b)=>a[0]-b[0]||a[1]-b[1]):null,pathSize,cycleSize};
+}
+function refreshCompact(){
+ const out=compactRecord();
+ $('compactResult').textContent=JSON.stringify(out,null,2);
+ const c=canonCache.get(uiStep);
+ $('compactStatus').textContent=out.canonicalEdges===null?(c&&!c.exact?'Canonicalization search was incomplete: canonicalEdges is null. Increase the IR budget.':'Canonical edges not yet computed for the selected step. Use Canonicalize selected.'):(out.pathSize===null?'Exact canonical edges available. Progression is incomplete, so pathSize and cycleSize remain null.':out.cycleSize===null?'Exact canonical edges available. Progression ended by completion or collapse, not by a cycle.':'Exact canonical edges and complete progression metrics available.');
+}
+$('copyCompact').onclick=()=>{const data=JSON.stringify(compactRecord(),null,2);if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(data).then(()=>$('compactStatus').textContent='Compact result copied.').catch(()=>$('compactStatus').textContent='Copy unavailable; select text in the result box.')}else{$('compactStatus').textContent='Clipboard unavailable; select text in the result box.'}};
+$('exportCompact').onclick=()=>download(JSON.stringify({rule,initialVertexCount:n,selectedStep:uiStep,...compactRecord()},null,2),`graph-${n}-${rule}-step-${uiStep}-compact.json`,'application/json');
+function download(text,filename,mime){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:mime}));a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000)}
+function records(){return states.map((g,i)=>({step:i,n:g.n,edgeCount:g.edges.size,degreeSequence:degrees(g).sort((a,b)=>b-a),graph6:graph6(g),edges:[...g.edges].map(s=>s.split(',').map(Number)),canonical:canonCache.has(i)?{exact:canonCache.get(i).exact,graph6:canonCache.get(i).order?graph6(Object.assign(newGraph(g.n),{edges:new Set(canonCache.get(i).edges.map(e=>key(e[0],e[1])))})):null,order:canonCache.get(i).order,edges:canonCache.get(i).exact?canonCache.get(i).edges:null}:null}))}
+$('exportJson').onclick=()=>{const data={metadata:{rule,n,attractor:outcome,created:new Date().toISOString(),interpretation:'temporary vertex labels; states compared under graph isomorphism'},states:records()};download(JSON.stringify(data,null,2),`graph-${n}-${rule}-trajectory.json`,'application/json')};
+$('exportCsv').onclick=()=>{const x=['step,n,edges,degree_sequence,graph6,edge_list,canonical_exact,canonical_graph6'];for(const s of records()){const fields=[s.step,s.n,s.edgeCount,s.degreeSequence.join(' '),s.graph6,s.edges.map(e=>e.join('-')).join(' '),s.canonical?.exact??'',s.canonical?.graph6??''];x.push(fields.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(','))}download(x.join('\n'),`graph-${n}-${rule}-trajectory.csv`,'text/csv')};
+$('exportG6').onclick=()=>download(states.map(graph6).join('\n')+'\n',`graph-${n}-${rule}-trajectory.g6`,'text/plain');
+// Canonicalization runs only on demand and never holds up progression.
+const canonicalWorkerSource = `
+self.onmessage=function(event){
+ const {n,edges,budget}=event.data;
+ const A=Array.from({length:n},()=>new Uint8Array(n));
+ for(const [u,v] of edges){A[u][v]=A[v][u]=1}
+ let explored=0,leaves=0,best=null,bestOrder=null,aborted=false;
+ const trace=[];
+ const degree=Array.from({length:n},(_,i)=>A[i].reduce((a,b)=>a+b,0));
+ let partition=[];
+ const grouped=new Map();
+ for(let i=0;i<n;i++){const d=degree[i];if(!grouped.has(d))grouped.set(d,[]);grouped.get(d).push(i)}
+ for(const d of [...grouped.keys()].sort((a,b)=>a-b))partition.push(grouped.get(d));
+ trace.push('Degree partition: '+partition.map(c=>'{'+c.join(',')+'}').join(' | '));
+ function refine(input){let cells=input.map(c=>c.slice());for(let round=0;round<n;round++){
+  let changed=false,out=[];
+  for(const cell of cells){const groups=new Map();for(const v of cell){const sig=cells.map(other=>{let count=0;for(const u of other)count+=A[v][u];return count}).join(',');if(!groups.has(sig))groups.set(sig,[]);groups.get(sig).push(v)}
+   if(groups.size>1)changed=true;
+   for(const k of [...groups.keys()].sort((a,b)=>{const x=a.split(',').map(Number),y=b.split(',').map(Number);for(let i=0;i<x.length;i++)if(x[i]!==y[i])return x[i]-y[i];return 0}))out.push(groups.get(k));
+  }
+  cells=out;if(!changed)break;
+ }
+ return cells;
+ }
+ function areTwins(v,w){for(let u=0;u<n;u++)if(u!==v&&u!==w&&A[v][u]!==A[w][u])return false;return true}
+ function encode(order){let str='';for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)str+=A[order[i]][order[j]]?'1':'0';return str}
+ function visit(cells,depth){if(aborted)return;
+  if(++explored>budget){aborted=true;return}
+  const part=refine(cells);
+  if(depth===0)trace.push('Equitable refinement: '+part.map(c=>'{'+c.join(',')+'}').join(' | '));
+  if(part.every(c=>c.length===1)){
+   leaves++;const order=part.map(c=>c[0]),code=encode(order);
+   if(best===null||code<best){best=code;bestOrder=order}
+   return;
+  }
+  let cellIndex=-1,bestSize=Infinity;
+  for(let k=0;k<part.length;k++)if(part[k].length>1&&part[k].length<bestSize){bestSize=part[k].length;cellIndex=k}
+  const cell=part[cellIndex];const representatives=[];
+  for(const v of cell){if(representatives.some(w=>areTwins(v,w)))continue;representatives.push(v)}
+  if(depth<3)trace.push('Depth '+depth+': individualize from {'+cell.join(',')+'}; '+representatives.length+' symmetry-distinct branch(es)');
+  for(const v of representatives){
+   const newCells=part.slice(0,cellIndex).concat([[v],cell.filter(w=>w!==v)],part.slice(cellIndex+1));
+   visit(newCells,depth+1);if(aborted)return;
+  }
+ }
+ visit(partition,0);
+ const outputEdges=[];
+ if(bestOrder){const inv=new Int32Array(n);bestOrder.forEach((v,i)=>inv[v]=i);for(const [u,v] of edges)outputEdges.push([Math.min(inv[u],inv[v]),Math.max(inv[u],inv[v])])}
+ self.postMessage({exact:!aborted,explored,leaves,order:bestOrder,edges:outputEdges,code:best,trace});
+};`;
+function cancelCanonical(){if(canonWorker){canonWorker.terminate();canonWorker=null}$('canonCancel').disabled=true;$('canonRun').disabled=false}
+function drawPreview(id,g){const svg=$(id);svg.replaceChildren();if(!g)return;
+ const nn=g.n,rad=nn<=3?93:nn>45?139:119,pts=Array.from({length:nn},(_,i)=>({x:230+rad*Math.cos(2*Math.PI*i/nn-Math.PI/2),y:160+rad*Math.sin(2*Math.PI*i/nn-Math.PI/2)}));
+ const frag=document.createDocumentFragment();for(const code of g.edges){const [a,b]=code.split(',').map(Number);frag.append(svgEl('line',{x1:pts[a].x,y1:pts[a].y,x2:pts[b].x,y2:pts[b].y,class:'edge'}))}
+ for(let i=0;i<nn;i++){frag.append(svgEl('circle',{cx:pts[i].x,cy:pts[i].y,r:nn>45?4.1:nn>20?7:11,fill:'#80c3fa',stroke:'#0d263c','stroke-width':1}));if(nn<=22){const label=svgEl('text',{x:pts[i].x,y:pts[i].y+3.5,'text-anchor':'middle','font-size':nn<=12?10:8,fill:'#102237'});label.textContent=i;frag.append(label)}}svg.append(frag)
+}
+function showCanonical(){refreshCompact();const s=states[uiStep];if(!s)return;
+ drawPreview('derivedView',s);$('derivedLabel').textContent='Step '+uiStep+' · '+s.edges.size+' edges';$('derivedCode').textContent='graph6: '+graph6(s);
+ const c=canonCache.get(uiStep);if(!c){drawPreview('canonicalView',null);$('canonicalCode').textContent='Canonicalization not yet computed';$('canonicalBadge').textContent='Not computed';$('canonTrace').textContent='Run canonicalization to inspect the individualization–refinement search for this state.';$('canonOrder').textContent='—';if($('autoCanon').checked&&!busy)queueMicrotask(()=>{if(states[uiStep]===s&&!canonCache.has(uiStep))canonicalizeSelected()});return}
+ if(c.order){const g=newGraph(s.n);for(const [a,b] of c.edges)g.edges.add(key(a,b));drawPreview('canonicalView',g);$('canonicalCode').textContent='graph6: '+graph6(g);$('canonOrder').textContent='New label → old vertex: '+c.order.join(', ')}else{drawPreview('canonicalView',null);$('canonicalCode').textContent='No completed candidate.';$('canonOrder').textContent='—'}
+ $('canonicalBadge').textContent=c.exact?'Exact canonical form':'Unverified candidate (budget exceeded)';$('canonicalBadge').className='subtle '+(c.exact?'good':'warn');$('canonTrace').textContent=c.trace.join(' · ')+' · '+c.explored.toLocaleString()+' search nodes; '+c.leaves.toLocaleString()+' complete orderings.';
+}
+function canonicalizeSelected(){if(!states.length)return;cancelCanonical();const step=uiStep,g=states[step],budget=Math.max(100,Math.min(1000000,Math.floor(Number($('canonBudget').value)||20000)));$('canonBudget').value=budget;
+ const url=URL.createObjectURL(new Blob([canonicalWorkerSource],{type:'text/javascript'}));canonWorker=new Worker(url);URL.revokeObjectURL(url);$('canonRun').disabled=true;$('canonCancel').disabled=false;$('canonStatus').textContent='Canonicalizing step '+step+' in background…';
+ canonWorker.onmessage=e=>{canonCache.set(step,e.data);$('canonStatus').textContent=e.data.exact?`Exact canonical form computed for step ${step} (${e.data.explored.toLocaleString()} search nodes).`:`Search budget exhausted at step ${step}. Increase IR search nodes to prove canonicality.`;cancelCanonical();if(uiStep===step)showCanonical()};
+ canonWorker.onerror=e=>{$('canonStatus').textContent='Canonicalization worker failed: '+e.message;cancelCanonical()};
+ canonWorker.postMessage({n:g.n,edges:[...g.edges].map(x=>x.split(',').map(Number)),budget});
+}
+$('canonRun').onclick=canonicalizeSelected;
+$('autoCanon').onchange=()=>{if($('autoCanon').checked&&states.length&&!canonCache.has(uiStep))canonicalizeSelected()};
+$('canonCancel').onclick=()=>{cancelCanonical();$('canonStatus').textContent='Canonicalization cancelled; progression history remains available.'};
+$('stepPrev').onclick=()=>{uiStep=Math.max(0,uiStep-1);renderHistory()};
+$('stepNext').onclick=()=>{uiStep=Math.min(states.length-1,uiStep+1);renderHistory()};
+$('stepGo').onclick=()=>{uiStep=Math.max(0,Math.min(states.length-1,Math.floor(Number($('stepJump').value)||0)));renderHistory()};
+$('stepJump').onkeydown=e=>{if(e.key==='Enter')$('stepGo').click()};
+resetPositions();graph=newGraph(n);setPreset('cycle');chooseRule('u');draw();
+})();
+</script></body></html>
